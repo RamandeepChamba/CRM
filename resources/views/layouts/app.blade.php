@@ -13,6 +13,12 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+        <style>
+            button:disabled {
+                opacity: 50%;
+            }
+        </style>
+
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
@@ -33,5 +39,45 @@
             </main>
         </div>
         @stack('scripts')
+        <script>
+            disableOnClick()
+            disableOnSubmit()
+
+            // Flash message
+            let messages = document.querySelectorAll('.flash-message');
+
+            messages.forEach(message => {
+                setTimeout(function () {
+                    message.parentNode.removeChild(message)
+                }, 4000)
+            })
+
+            // Button - prevent multiple clicks
+            function disableOnClick() {
+                let btns = document.querySelectorAll('.disable-onClick')
+            
+                btns.forEach(btn => {
+                    btn.addEventListener('click', e => {
+                        btn.disabled = true
+                    })    
+                })
+            }
+            
+            // Form - prevent multiple submits
+            function disableOnSubmit() {
+                let forms = document.querySelectorAll('.disable-onSubmit')
+
+                forms.forEach(form => {
+                    form.addEventListener('submit', e => {
+                        e.preventDefault()
+                        let btn = form.getElementsByTagName('button')[0]
+                        // Disable button
+                        btn.disabled = true
+                        // Submit form
+                        form.submit()
+                    })
+                })
+            }
+        </script>
     </body>
 </html>

@@ -16,7 +16,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        dd('index');
+        $companies = Company::paginate(2);
+        return view('companies.index', ['companies' => $companies]);
     }
 
     /**
@@ -39,8 +40,11 @@ class CompanyController extends Controller
     {
         $data = $request->validated();
         $company = new Company($data);
-        $company->logo = asset('/storage/' . $request->file('logo')->store('logos', 'public'));
+        if($request->file('logo')) {
+            $company->logo = asset('/storage/' . $request->file('logo')->store('logos', 'public'));
+        }
         $company->save();
+        session()->flash('status', 'Company saved successfully');
         return redirect()->route('companies.show', ['company' => $company]);
     }
 
@@ -79,9 +83,7 @@ class CompanyController extends Controller
         // Check previous logo
         if(isset($company->logo) && isset($data['logo'])) {
             // Remove previous logo
-            // http://localhost/storage/logos/DWQYwRyn7M5k3tLm6DprlkI5YS7IoV18m7EXjFg5.jpg"
-            $path = explode('/storage/', $company->logo);
-            Storage::disk('public')->delete($path[1]);
+            $this->removeLogo($company->logo);
         }
         foreach ($data as $key => $value) {
             $company->$key = $value;
@@ -91,6 +93,7 @@ class CompanyController extends Controller
             $company->logo = asset('/storage/' . $request->file('logo')->store('logos', 'public'));
         }
         $company->save();
+        session()->flash('status', 'Company updated successfully');
         return redirect()->route('companies.show', ['company' => $company]);
     }
 
@@ -102,6 +105,32 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        dd('destroy');
+        // Check if logo exist
+        if ($this->logoExist($company->logo)) {
+            // Delete logo
+            $this->removeLogo($company->logo);
+        }
+        // Delete Employees
+            // Delete avatar
+        // Delete Company
+        $company->delete();
+        session()->flash('status', 'Company deleted successfully');
+        return redirect()->route('companies.index');
+    }
+
+    private function logoExist($url)
+    {
+        if(!$url) {
+            return 0;
+        }
+        // http://localhost/storage/logos/DWQYwRyn7M5k3tLm6DprlkI5YS7IoV18m7EXjFg5.jpg"
+        $path = explode('/storage/', $url);
+        return Storage::disk('public')->exists($path[1] ?? $path[0]);
+    }
+    private function removeLogo($url)
+    {
+        // http://localhost/storage/logos/DWQYwRyn7M5k3tLm6DprlkI5YS7IoV18m7EXjFg5.jpg"
+        $path = explode('/storage/', $url);
+        Storage::disk('public')->delete($path[1]);
     }
 }

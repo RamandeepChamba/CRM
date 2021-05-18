@@ -1,3 +1,7 @@
+@php
+    $flash_message = session('status');    
+@endphp
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -5,13 +9,16 @@
         </h2>
     </x-slot>
 
-    <div class="">
+    <div>
+        @isset($flash_message)
+            <x-flash-message color="green" class="flash-message">{{ $flash_message }}</x-flash-message>
+        @endisset
         <table class="table-auto bg-white w-full sm:w-2/3 sm:mx-auto sm:mt-10">
             <thead>
                 <tr>
                     <th colspan="2" class="">
                         <div class="flex flex-col md:flex-row">
-                            <div id="logo-container" class="bg-blue-200 h-56 md:w-1/2">
+                            <div id="logo-container" class="bg-blue-200 h-56 md:w-1/2 text-white">
                                 <!-- Logo -->
                                 <img 
                                     src="{{ $company->logo ?? 'https://sahityabhawanpublications.com/wp-content/uploads/2017/10/logo-placeholder.jpg' }}" 

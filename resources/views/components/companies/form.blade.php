@@ -10,7 +10,7 @@
     <div class="py-12 md:px-40 lg:px-60 xl:px-96">
         <form action="{{ route('companies.' . (isset($company) ? 'update' : 'store'), $company->id ?? null) }}" 
             method="POST" enctype="multipart/form-data" 
-            class="flex flex-col py-16 px-10 bg-white md:px-14 lg:px-20 space-y-4">
+            class="flex flex-col py-16 px-10 bg-white md:px-14 lg:px-20 space-y-4 disable-onSubmit">
             @csrf
             @isset($company)
                 @method('PATCH')

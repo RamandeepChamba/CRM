@@ -6,12 +6,13 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    You're logged in!
-                </div>
-            </div>
+        <h2 class="text-5xl text-center text-white py-10 bg-gray-600 max-w-5xl mx-auto py-10 sm:px-6 lg:px-8">CRM</h2>
+        <p class="text-2xl bg-gray-200 max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+            Welcome to CRM, manage companies and their employees all in one place
+        </p>
+        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 text-2xl bg-white p-10 text-blue-400">
+            <a href="{{ route('companies.index') }}" class="block mb-6">Companies</a>
+            <a href="#" class="block">Employees</a>
         </div>
     </div>
 </x-app-layout>
