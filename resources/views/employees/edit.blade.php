@@ -1,0 +1,1 @@
+<x-employees.form :companies="$companies" :employee="$employee" />

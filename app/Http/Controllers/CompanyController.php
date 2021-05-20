@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Traits\DeleteEmployeeTrait;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCompanyRequest;
 use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
+    use DeleteEmployeeTrait;
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +18,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::paginate(2);
+        $companies = Company::paginate(3);
         return view('companies.index', ['companies' => $companies]);
     }
 
@@ -111,7 +113,9 @@ class CompanyController extends Controller
             $this->removeLogo($company->logo);
         }
         // Delete Employees
-            // Delete avatar
+        foreach ($company->employees as $employee) {
+            $this->deleteEmployee($employee);
+        }
         // Delete Company
         $company->delete();
         session()->flash('status', 'Company deleted successfully');

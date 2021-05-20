@@ -4,9 +4,9 @@
 
 ## Todos
 
-* Make employees features
-* Filter employees.index by company (searchbar / AJAX)
+* Filter(sortBy) employees.index by company (searchbar / AJAX)
+    * companies.show has employees link
 * Paginate along with filters
-* Cascade company deletion to employee deletion and avatar (Traits)
-* Flash message after actions like employee added, edited, deleted
+* Deploy
+* Add to portfolio
 * Learn more eloquent
